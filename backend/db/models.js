@@ -27,4 +27,12 @@ const PollModel = sequelize.define('poll', {
   realisationTime: { type: DataTypes.STRING },
 });
 
-export { PollModel };
+const SubcriberModel = sequelize.define('subscriber', {
+  chatId: { type: DataTypes.INTEGER, primaryKey: true },
+  first_name: { type: DataTypes.STRING },
+  last_name: { type: DataTypes.STRING },
+  username: { type: DataTypes.STRING },
+});
+
+
+export { PollModel, SubcriberModel };
