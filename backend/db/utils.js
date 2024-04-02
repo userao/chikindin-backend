@@ -12,4 +12,8 @@ function unsubscribeUser(user) {
   });
 }
 
-export { subscribeUser, unsubscribeUser };
+function getSubscribers() {
+  return SubcriberModel.findAll();
+}
+
+export { subscribeUser, unsubscribeUser, getSubscribers };
