@@ -10,18 +10,27 @@ function startBot() {
     { command: "/unsubscribe", description: "Отписаться от рассылки анкет" },
   ]);
   bot.on("message", async(message) => {
+    console.log(message)
     const { text } = message;
     const actionsMapping = {
+      '/start': () => 'Привет, я умею отправлять новые анкеты с сайта. Можешь подписаться командой /subscribe',
       '/subscribe': async (chat) => {
-        await subscribeUser(chat);
-        return 'Вы подписались на рассылку анкет';
+        const isSubscribed = await subscribeUser(chat);
+        return isSubscribed ? 'Подписка активирована. Отписаться можно командой /unsubscribe' : 'Ты уже подписан.'
       },
       '/unsubscribe': async (chat) => {
-        await unsubscribeUser(chat);
-        return 'Вы отписались от рассылки анкет';
+        const isDeleted = await unsubscribeUser(chat);
+        return isDeleted ? 'Подписка отменена.' : 'Ты не был подписан.';
       },
     }
+
     const action = actionsMapping[text];
+
+    if (!action) {
+      bot.sendMessage(message.chat.id, 'Я тебя не понимаю :(');
+      return null;
+    }
+
     const responseText = await action(message.chat);
     bot.sendMessage(message.chat.id, responseText);
   });

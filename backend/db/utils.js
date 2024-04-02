@@ -1,15 +1,26 @@
 import { SubcriberModel } from "./models.js";
 
-function subscribeUser(user) {
-  SubcriberModel.create({ ...user, chatId: user.id });
+async function subscribeUser(user) {
+  const isSubscribedAlready = !!await SubcriberModel.findOne({
+    where: { chatId: user.id }
+  })
+  
+  if (isSubscribedAlready) {
+    return !isSubscribedAlready;
+  }
+
+  await SubcriberModel.create({ ...user, chatId: user.id });
+  return !isSubscribedAlready;
 }
 
-function unsubscribeUser(user) {
-  SubcriberModel.destroy({
+async function unsubscribeUser(user) {
+  const isDeleted = !!await SubcriberModel.destroy({
     where: {
       chatId: user.id,
     },
   });
+
+  return isDeleted;
 }
 
 function getSubscribers() {
