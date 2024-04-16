@@ -27,12 +27,55 @@ const PollModel = sequelize.define('poll', {
   realisationTime: { type: DataTypes.STRING },
 });
 
-const SubcriberModel = sequelize.define('subscriber', {
+const SubscriberModel = sequelize.define('subscriber', {
   chatId: { type: DataTypes.INTEGER, primaryKey: true },
   first_name: { type: DataTypes.STRING },
   last_name: { type: DataTypes.STRING },
   username: { type: DataTypes.STRING },
 });
 
+const QuestionModel = sequelize.define('question', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  type: { type: DataTypes.STRING, allowNull: false },
+  title: { type: DataTypes.STRING, allowNull: false },
+  projectType: { type: DataTypes.STRING, allowNull: false },
+  required: { type: DataTypes.BOOLEAN, allowNull: false },
+});
 
-export { PollModel, SubcriberModel };
+const OptionModel = sequelize.define('option', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  questionId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: QuestionModel,
+      key: 'id',
+    },
+  },
+  title: { type: DataTypes.STRING, allowNull: false }
+});
+
+const ProjectModel = sequelize.define('project', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  name: { type: DataTypes.STRING, allowNull: false },
+  year: { type: DataTypes.STRING, allowNull: false },
+  location: { type: DataTypes.STRING, allowNull: false },
+  description: { type: DataTypes.STRING, allowNull: false },
+  use: { type: DataTypes.STRING, allowNull: false },
+});
+
+const ProjectPhotoModel = sequelize.define('project_photo', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  projectId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: ProjectModel,
+      key: 'id',
+    },
+  },
+  src: { type: DataTypes.STRING, allowNull: false },
+  
+})
+
+export { PollModel, SubscriberModel, OptionModel, QuestionModel, ProjectModel, ProjectPhotoModel };
