@@ -5,13 +5,13 @@ import PollsController from "./PollsController.js";
 import QuestionsController from "./QuestionsController.js";
 import ProjectsController from "./ProjectsController.js";
 
-const photosPath = process.env.NODE_ENV === 'production' ? process.env.PHOTOS_PATH_DEV : process.env.PHOTOS_PATH_PROD;
+const photosPath = process.env.NODE_ENV === 'production' ? process.env.PHOTOS_PATH_PROD : process.env.PHOTOS_PATH_DEV;
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, photosPath)
+    cb(null, photosPath);
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname))
+    cb(null, req.body.id + '_' + Date.now() + path.extname(file.originalname));
   }
 })
 const upload = multer({ storage });

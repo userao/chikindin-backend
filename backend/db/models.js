@@ -56,7 +56,7 @@ const OptionModel = sequelize.define('option', {
 });
 
 const ProjectModel = sequelize.define('project', {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  id: { type: DataTypes.INTEGER, primaryKey: true },
   name: { type: DataTypes.STRING, allowNull: false },
   year: { type: DataTypes.STRING, allowNull: false },
   location: { type: DataTypes.STRING, allowNull: false },

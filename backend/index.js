@@ -14,7 +14,9 @@ app.use(express.static(photosPath));
 async function startApp() {
   try {
     await sequelize.authenticate();
-    // await sequelize.sync();
+    if (process.env.NODE_ENV === 'development') {
+      await sequelize.sync();
+    }
     app.listen(process.env.PORT, () => console.log('SERVER STARTED ON PORT ' + process.env.PORT));
   } catch (e) {
     console.log(e);
