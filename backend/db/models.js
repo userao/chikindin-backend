@@ -75,7 +75,6 @@ const ProjectPhotoModel = sequelize.define('project_photo', {
     },
   },
   src: { type: DataTypes.STRING, allowNull: false },
-  
 })
 
 export { PollModel, SubscriberModel, OptionModel, QuestionModel, ProjectModel, ProjectPhotoModel };

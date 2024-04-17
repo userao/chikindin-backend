@@ -2,30 +2,40 @@ import { QuestionModel, OptionModel } from './db/models.js';
 
 class QuestionsService {
   async getAll() {
-    const questions = await QuestionModel.findAll();
-    const allOptions = await OptionModel.findAll();
+    try {
+      const dbQuestions = await QuestionModel.findAll();
+      return dbQuestions.map(async (question) => {
+        if (question.type === 'input') return question;
 
-    return questions.map((q) => {
-      if (q.type === 'input') return q;
+        const dpOptions = await OptionModel.findAll({
+          where: {
+            questionId: question.id,
+          }
+        });
 
-      const questionOptions = allOptions.filter((op) => op.questionId === q.id);
-      return { ...q.dataValues, options: questionOptions }
-    })
+        return { ...question.dataValues, options: dpOptions };
+      })
+    } catch (e) {
+      throw e;
+    }
+
   }
 
-  async create(questions) {
+  async create(question) {
     try {
-      questions.forEach(async (q) => {
-        const dbQuestion = await QuestionModel.create(q);
+      const dbQuestion = await QuestionModel.create(question);
 
-        if (q.type !== 'input') {
-          q.options.forEach((op) => OptionModel.create({ title: op, questionId: dbQuestion.id }));
-        }
-      })
+      if (question.type === 'input') {
+        return [dbQuestion];
+      }
 
-      return questions;
+      const dbOptions = await Promise.all(
+        question.options.map((option) => OptionModel.create({ title: option, questionId: dbQuestion.id }))
+      );
+
+      return [dbQuestion, dbOptions];
     } catch (e) {
-      throw new Error(e);
+      throw e;
     }
 
   }

@@ -3,8 +3,8 @@ import QuestionsService from "./QuestionsService.js";
 class QuestionsController {
   async getAll(req, res) {
     try {
-      const q = await QuestionsService.getAll();
-      res.status(200).json(q);
+      const questions = await QuestionsService.getAll();
+      res.status(200).json(await Promise.all(questions));
     } catch (e) {
       res.status(500).json(e.message);
     }
