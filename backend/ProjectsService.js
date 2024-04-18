@@ -18,11 +18,22 @@ class ProjectsService {
     }
   }
 
+  async getOne(projectId) {
+    try {
+      const dbProject = await ProjectModel.findOne({ where: { id: projectId } });
+      const dbPhotos = await ProjectPhotoModel.findAll({ where: { projectId } });
+
+      return { ...dbProject.dataValues, photos: dbPhotos };
+    } catch (e) {
+      throw e;
+    }
+  }
+
   async create(project, photos) {
     try {
       const dbProject = await ProjectModel.create(project);
       const dbPhotos = await Promise.all(
-        photos.map((photo) => ProjectPhotoModel.create({ src: photo.path, projectId: dbProject.id }))
+        photos.map((photo) => ProjectPhotoModel.create({ destination: photo.destination, filename: photo.filename, projectId: dbProject.id }))
       );
       return [dbProject, dbPhotos];
     } catch (e) {

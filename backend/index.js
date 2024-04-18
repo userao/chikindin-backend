@@ -15,7 +15,7 @@ async function startApp() {
   try {
     await sequelize.authenticate();
     if (process.env.NODE_ENV === 'development') {
-      await sequelize.sync();
+      await sequelize.sync({ alter: true });
     }
     app.listen(process.env.PORT, () => console.log('SERVER STARTED ON PORT ' + process.env.PORT));
   } catch (e) {

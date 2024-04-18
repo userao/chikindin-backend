@@ -25,6 +25,7 @@ router.get('/questions', QuestionsController.getAll);
 router.post('/questions', QuestionsController.create);
 
 router.get('/projects', ProjectsController.getAll);
+router.get('/projects/:id', ProjectsController.getOne)
 router.post('/projects', upload.array('photos', 30), ProjectsController.create);
 
 export default router;

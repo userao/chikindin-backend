@@ -56,7 +56,7 @@ const OptionModel = sequelize.define('option', {
 });
 
 const ProjectModel = sequelize.define('project', {
-  id: { type: DataTypes.INTEGER, primaryKey: true },
+  id: { type: DataTypes.STRING, primaryKey: true },
   name: { type: DataTypes.STRING, allowNull: false },
   year: { type: DataTypes.STRING, allowNull: false },
   location: { type: DataTypes.STRING, allowNull: false },
@@ -67,14 +67,15 @@ const ProjectModel = sequelize.define('project', {
 const ProjectPhotoModel = sequelize.define('project_photo', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   projectId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
     references: {
       model: ProjectModel,
       key: 'id',
     },
   },
-  src: { type: DataTypes.STRING, allowNull: false },
+  destination: { type: DataTypes.STRING, allowNull: false },
+  filename: { type: DataTypes.STRING, allowNull: false }
 })
 
 export { PollModel, SubscriberModel, OptionModel, QuestionModel, ProjectModel, ProjectPhotoModel };

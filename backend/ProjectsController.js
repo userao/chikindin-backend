@@ -11,10 +11,19 @@ class ProjectsController {
 
   }
 
+  async getOne(req, res) {
+    try {
+      const project = await ProjectsService.getOne(req.params.id);
+      res.status(200).json(project);
+    } catch(e) {
+      res.status(500).json(e.message);
+    }
+  }
+
   async create(req, res) {
     try {
       const projects = await ProjectsService.create(req.body, req.files);
-      res.status(200).json(projects);
+      res.status(201).json(projects);
     } catch(e) {
       res.status(500).json(e.message)
     }
