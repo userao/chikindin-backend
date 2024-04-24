@@ -9,14 +9,12 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use('/api', router);
-app.use('/api/images', express.static(photosPath));
+app.use('/api/photos', express.static(photosPath));
 
 async function startApp() {
   try {
     await sequelize.authenticate();
-    if (process.env.NODE_ENV === 'development') {
-      await sequelize.sync({ alter: true });
-    }
+    await sequelize.sync({ alter: true });
     app.listen(process.env.PORT, () => console.log('SERVER STARTED ON PORT ' + process.env.PORT));
   } catch (e) {
     console.log(e);
