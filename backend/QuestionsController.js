@@ -11,13 +11,10 @@ class QuestionsController {
   }
 
   async create(req, res) {
-    try {
-      QuestionsService.create(req.body)
-        .then((questions) => res.status(200).json(questions));
-    } catch (e) {
-      res.status(500).json(e.message);
-    }
+    QuestionsService.create(req.body)
+      .then((question) => res.status(200).json(question))
+      .catch((e) => res.status(500).json(e.message));
   }
 }
 
-export default new QuestionsController;
+export default new QuestionsController();
