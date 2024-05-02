@@ -15,6 +15,15 @@ class QuestionsController {
       .then((question) => res.status(200).json(question))
       .catch((e) => res.status(500).json(e.message));
   }
+
+  async delete(req, res) {
+    try {
+      const question = QuestionsService.delete(req.params.id);
+      res.status(200).json(question);
+    } catch (e) {
+      res.status(500).json(e.message);
+    }
+  }
 }
 
 export default new QuestionsController();
