@@ -1,3 +1,4 @@
+import * as path from 'node:path';
 import { ProjectModel, ProjectPhotoModel } from "./db/models.js";
 
 class ProjectsService {
@@ -8,11 +9,11 @@ class ProjectsService {
         const projectPhotos = await ProjectPhotoModel.findAll({
           where: {
             projectId: project.id,
-          }
+          },
         });
 
         return { ...project.dataValues, photos: projectPhotos };
-      })
+      });
     } catch (e) {
       throw e;
     }
@@ -20,8 +21,12 @@ class ProjectsService {
 
   async getOne(projectId) {
     try {
-      const dbProject = await ProjectModel.findOne({ where: { id: projectId } });
-      const dbPhotos = await ProjectPhotoModel.findAll({ where: { projectId } });
+      const dbProject = await ProjectModel.findOne({
+        where: { id: projectId },
+      });
+      const dbPhotos = await ProjectPhotoModel.findAll({
+        where: { projectId },
+      });
 
       return { ...dbProject.dataValues, photos: dbPhotos };
     } catch (e) {
@@ -33,13 +38,32 @@ class ProjectsService {
     try {
       const dbProject = await ProjectModel.create(project);
       const dbPhotos = await Promise.all(
-        photos.map((photo) => ProjectPhotoModel.create({ destination: photo.destination, filename: photo.filename, projectId: dbProject.id }))
+        photos.map((photo) =>
+          ProjectPhotoModel.create({
+            destination: photo.destination,
+            filename: photo.filename,
+            projectId: dbProject.id,
+          })
+        )
       );
       return [dbProject, dbPhotos];
     } catch (e) {
       throw e;
     }
   }
+
+  async delete(id) {
+    try {
+      // const deletedPhotos = await ProjectPhotoModel.destroy({
+      //   where: {
+      //     projectId: id
+      //   }
+      // });
+      console.log(path.dirname());
+    } catch (e) {
+      throw e;
+    }
+  }
 }
 
-export default new ProjectsService;
+export default new ProjectsService();

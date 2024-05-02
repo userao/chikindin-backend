@@ -28,6 +28,15 @@ class ProjectsController {
       res.status(500).json(e.message)
     }
   }
+
+  async delete(req, res) {
+    try {
+      const deleted = await ProjectsService.delete(req.params.id);
+      res.status(200).json(deleted); 
+    } catch (e) {
+      res.status(500).json(e.message);
+    }
+  }
 }
 
 export default new ProjectsController;

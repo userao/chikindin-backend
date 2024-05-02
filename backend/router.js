@@ -28,6 +28,6 @@ router.delete('/questions/:id', QuestionsController.delete)
 router.get('/projects', ProjectsController.getAll);
 router.get('/projects/:id', ProjectsController.getOne)
 router.post('/projects', upload.array('photos', 30), ProjectsController.create);
-// router.delete('/projects/:id', ProjectsController.delete)
+router.delete('/projects/:id', ProjectsController.delete)
 
 export default router;
