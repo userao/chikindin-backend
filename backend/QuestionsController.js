@@ -18,7 +18,7 @@ class QuestionsController {
 
   async delete(req, res) {
     try {
-      const deleted = QuestionsService.delete(req.params.id);
+      const deleted = await QuestionsService.delete(req.params.id);
       res.status(200).json(deleted);
     } catch (e) {
       res.status(500).json(e.message);

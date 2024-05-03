@@ -2,7 +2,6 @@ import { QuestionModel, OptionModel } from "./db/models.js";
 
 class QuestionsService {
   async getAll() {
-    try {
       const dbQuestions = await QuestionModel.findAll();
       return dbQuestions.map(async (question) => {
         if (question.type === "input") return question;
@@ -15,13 +14,9 @@ class QuestionsService {
 
         return { ...question.dataValues, options: dpOptions };
       });
-    } catch (e) {
-      throw e;
-    }
   }
 
   async create(question) {
-    try {
       const dbQuestion = await QuestionModel.create(question);
 
       if (question.type === "input") {
@@ -35,30 +30,23 @@ class QuestionsService {
       );
 
       return [dbQuestion, dbOptions];
-    } catch (e) {
-      throw e;
-    }
   }
 
   async delete(id) {
-    try {
       const optionsDeleted = await OptionModel.destroy({
         where: {
           questionId: id,
         },
       });
-      const questionDelted = await QuestionModel.destroy({
+      const questionDeleted = await QuestionModel.destroy({
         where: {
           id,
         },
       });
       return {
         optionsDeleted,
-        questionDelted,
+        questionDeleted,
       };
-    } catch (e) {
-      throw e;
-    }
   }
 }
 
