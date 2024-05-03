@@ -1,4 +1,5 @@
-import * as path from 'node:path';
+import path from "path";
+import fs from "node:fs/promises";
 import { ProjectModel, ProjectPhotoModel } from "./db/models.js";
 
 class ProjectsService {
@@ -54,12 +55,25 @@ class ProjectsService {
 
   async delete(id) {
     try {
-      // const deletedPhotos = await ProjectPhotoModel.destroy({
-      //   where: {
-      //     projectId: id
-      //   }
-      // });
-      console.log(path.dirname());
+      const deletedPhotos = await ProjectPhotoModel.destroy({
+        where: {
+          projectId: id,
+        },
+      });
+      const photosDir = path.join(`${process.cwd()}/uploads`);
+      (await fs.readdir(photosDir)).forEach((p) => {
+        const [projectId] = p.split("_");
+        if (projectId === id) {
+          fs.rm(path.join(photosDir, p));
+        }
+      });
+      const deletedProjects = await ProjectModel.destroy({
+        where: {
+          id,
+        },
+      });
+
+      return { deletedPhotos, deletedProjects };
     } catch (e) {
       throw e;
     }
