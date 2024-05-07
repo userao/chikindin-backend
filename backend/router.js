@@ -23,6 +23,7 @@ router.post('/polls', PollsController.create);
 
 router.get('/questions', QuestionsController.getAll);
 router.post('/questions', QuestionsController.create);
+router.get('/questions/:id', QuestionsController.getOne)
 router.delete('/questions/:id', QuestionsController.delete)
 
 router.get('/projects', ProjectsController.getAll);
